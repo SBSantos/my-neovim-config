@@ -8,8 +8,10 @@ return {
 				tab_char = "│",
 			},
 			scope = {
-				char = "│",
+				enabled = true,
+				char = "║",
 				show_start = false,
+				show_end = false,
 			},
 		})
 	end,

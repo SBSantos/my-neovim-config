@@ -251,8 +251,8 @@ return {
 					cmp.close_docs()
 				end, { "i", "s" }),
 
-				["<C-f>"] = cmp.mapping.scroll_docs(4),
-				["<C-a"] = cmp.mapping.scroll_docs(-4),
+				["<C-g>"] = cmp.mapping.scroll_docs(4),
+				["<C-t>"] = cmp.mapping.scroll_docs(-4),
 				["<C-j>"] = cmp.mapping(select_next_item),
 				["<C-k>"] = cmp.mapping(select_prev_item),
 				["<C-n>"] = cmp.mapping(select_next_item),
