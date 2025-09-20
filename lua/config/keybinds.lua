@@ -27,10 +27,10 @@ kmap("n", "<leader>sv", "<Cmd>vsplit<CR>", { desc = "Split window vertically" })
 kmap("n", "<leader>sh", "<Cmd>split<CR>", { desc = "Split window horizontally" })
 
 -- window & terminal resize
--- kmap("n", "<C-Down>", "<Cmd>resize +2<CR>", { desc = "Incrase terminal height by 2" })
--- kmap("n", "<C-Up>", "<Cmd>resize -2<CR>", { desc = "Decrease terminal height by 2" })
-kmap("n", "<C-Right>", "<Cmd>vertical resize -2<CR>", { desc = "Decrease window width" })
-kmap("n", "<C-Left>", "<Cmd>vertical resize +2<CR>", { desc = "Increase window width" })
+kmap({ "n", "t" }, "<C-Down>", "<CMD>resize -2<CR>", { noremap = true, desc = "Increase win/term height" })
+kmap({ "n", "t" }, "<C-Up>", "<CMD>resize +2<CR>", { noremap = true, desc = "Decrease win/term height" })
+kmap({ "n", "t" }, "<C-Right>", "<CMD>vertical resize -2<CR>", { noremap = true, desc = "Decrease win/term width" })
+kmap({ "n", "t" }, "<C-Left>", "<CMD>vertical resize +2<CR>", { noremap = true, desc = "Increase win/term width" })
 
 -- indenting in visual mode
 kmap("v", "<", "<gv", { desc = "Indent left and reselect" })

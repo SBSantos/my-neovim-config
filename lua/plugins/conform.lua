@@ -5,7 +5,7 @@ return {
 		local conform = require("conform")
 		conform.setup({
 			formatters = {
-				["marksdown-toc"] = {
+				["markdown-toc"] = {
 					condition = function(_, ctx)
 						for _, line in ipairs(vim.api._buf_get_lines(ctx.buf, 0, -1, false)) do
 							if line:find("<!%-%- toc %-%->") then
@@ -24,18 +24,22 @@ return {
 				},
 			},
 			formatters_by_ft = {
+				c = { "clang_format" },
+				cpp = { "clang_format" },
+				cs = { "csharpier" },
 				css = { "prettier" },
-				hyml = { "prettier" },
+				html = { "prettier" },
 				json = { "prettier" },
 				lua = { "stylua" },
 				markdown = { "prettier" },
-				["markdown.mdx"] = { "prettier", "markdownlint-cl2", "markdown-toc" },
+				["markdown.mdx"] = { "prettier" },
+				xml = { "xmlformat" },
 			},
-			format_on_save = {
-				lsp_fallback = true,
-				async = false,
-				timeout_ms = 500,
-			},
+			-- format_on_save = {
+			-- 	lsp_fallback = true,
+			-- 	async = false,
+			-- 	timeout_ms = 500,
+			-- },
 		})
 
 		-- Configure individual formatters
@@ -53,12 +57,28 @@ return {
 		conform.formatters.shfmt = {
 			prepend_args = { "-1", "4" },
 		}
-		vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+
+		conform.formatters.csharpier = {
+			command = "csharpier",
+			args = {
+				"format",
+				"--write-stdout",
+			},
+			stdin = true,
+		}
+
+		conform.formatters.xmlformat = {
+			command = "xmlformat",
+			args = { "--selfclose", "-" },
+			stdin = true,
+		}
+
+		vim.keymap.set({ "n", "v" }, "<C-f>", function()
 			conform.format({
 				lsp_fallback = true,
 				async = false,
 				timeout_ms = 500,
 			})
-		end, { desc = "Prettier Format whole file or range (in visual mode)" })
+		end, { desc = "Format whole file (or range in visual mode)" })
 	end,
 }

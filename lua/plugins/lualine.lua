@@ -6,7 +6,6 @@ return {
 	config = function()
 		local lualine = require("lualine")
 		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
-		local current_theme = require("current-theme")
 
 		local mode = {
 			"mode",
@@ -33,7 +32,7 @@ return {
 				modified = " ",
 				readonly = " ",
 				unnamed = "[No Name]",
-				newfile = " ",
+				newfile = " ",
 			},
 		}
 
@@ -45,13 +44,28 @@ return {
 			always_visible = false,
 		}
 
-		local branch = { "branch", icon = { "" } }
+		local branch = { "branch", icon = { "" } }
 
 		local filetype = {
 			"filetype",
 			colored = true,
 			icon_only = true,
 		}
+
+		-- local lspstatus = {
+		-- 	"lsp_status",
+		-- 	icon = "", -- f013
+		-- 	symbols = {
+		-- 		-- Standard unicode symbols to cycle through for LSP progress:
+		-- 		spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+		-- 		-- Standard unicode symbol for when LSP is done:
+		-- 		done = "",
+		-- 		-- Delimiter inserted between LSP names:
+		-- 		separator = " ",
+		-- 	},
+		-- 	-- List of LSP names to ignore (e.g., `null-ls`):
+		-- 	ignore_lsp = { "roslyn" },
+		-- }
 
 		lualine.setup({
 			icons_enabled = true,
@@ -65,7 +79,7 @@ return {
 				lualine_b = { branch },
 				lualine_c = { diff, filename },
 				lualine_x = {
-					{ "fileformat" },
+					-- lspstatus,
 					diagnostics,
 					{
 						-- require("noice").api.statusline.mode.get,
@@ -76,6 +90,7 @@ return {
 					},
 					-- { "encoding" },
 					filetype,
+					{ "fileformat" },
 				},
 				lualine_y = {}, -- removes 'progress'
 			},

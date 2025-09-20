@@ -1,1 +1,1 @@
-vim.cmd("colorscheme monokai-nightasty")
+vim.cmd("colorscheme nightfall")

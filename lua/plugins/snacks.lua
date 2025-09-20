@@ -145,13 +145,13 @@ return {
 				end,
 				desc = "Snack Git Branches",
 			},
-			{
-				"<leader>sth",
-				function()
-					require("snacks").picker.colorschemes()
-				end,
-				desc = "Snack Colorschemes Picker",
-			},
+			-- {
+			-- 	"<leader>sth",
+			-- 	function()
+			-- 		require("snacks").picker.colorschemes()
+			-- 	end,
+			-- 	desc = "Snack Colorschemes Picker",
+			-- },
 			{
 				"<leader>hp",
 				function()
