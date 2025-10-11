@@ -29,7 +29,9 @@ require("lazy").setup({
 		{ import = "plugins" },
 		{ import = "plugins.lsp" },
 		{ import = "plugins.gitshit" },
+		{ import = "plugins.debugger" },
 	},
+    ui = { border = "rounded" },
 	change_detection = { notify = false },
 	opts = {
 		rocks = { enabled = false },

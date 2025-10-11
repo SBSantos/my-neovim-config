@@ -199,22 +199,38 @@ return {
 		-- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
 		require("luasnip.loaders.from_vscode").lazy_load()
 
+		-- easy-dotnet
+		cmp.register_source("easy-dotnet", require("easy-dotnet").package_completion_source)
+
 		cmp.setup({
+			enabled = function()
+				local context = require("cmp.config.context")
+				local disabled = false
+
+				-- disabling autocompletion when writing comments
+				disabled = disabled or (vim.api.nvim_get_option_value("buftype", { buf = 0 }) == "prompt")
+				disabled = disabled or (vim.fn.reg_recording() ~= "")
+				disabled = disabled or (vim.fn.reg_executing() ~= "")
+				disabled = disabled or context.in_treesitter_capture("comment")
+				disabled = disabled or context.in_syntax_group("Comment")
+
+				-- disabling autocompletion when writing strings
+				disabled = disabled or context.in_treesitter_capture("string")
+				disabled = disabled or context.in_syntax_group("String")
+
+				return not disabled
+			end,
 			experimental = {
 				-- HACK: experimenting with ghost text
 				-- look at `toggle_ghost_text()` function below.
-				ghost_text = true,
+				ghost_text = false,
 			},
 			completion = {
 				completeopt = "menu,menuone,noinsert",
 			},
 			window = {
-				documentation = {
-					border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-				},
-				completion = {
-					border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
-				},
+				documentation = cmp.config.window.bordered(),
+				completion = cmp.config.window.bordered(),
 			},
 			-- config nvim cmp to work with snippet engine
 			snippet = {
@@ -227,6 +243,7 @@ return {
 				{ name = "luasnip" }, -- snippets
 				{ name = "lazydev" },
 				{ name = "nvim_lsp" },
+				{ name = "easy-dotnet" },
 				{ name = "buffer" }, -- text within current buffer
 				{ name = "path" }, -- file system paths
 				{ name = "tailwindcss-colorizer-cmp" },
@@ -338,9 +355,9 @@ return {
 					return vim_item
 				end,
 				-- format = lspkind.cmp_format({
-				--         maxwidth = 30,
-				--         ellipsis_char = "...",
-				--         before = require("tailwindcss-colorizer-cmp").formatter
+				-- 	maxwidth = 30,
+				-- 	ellipsis_char = "...",
+				-- 	before = require("tailwindcss-colorizer-cmp").formatter,
 				-- }),
 				-- format = require("tailwindcss-colorizer-cmp").formatter
 			},
@@ -350,32 +367,32 @@ return {
 		-- Only show ghost text at word boundaries, not inside keywords. Based on idea
 		-- from: https://github.com/hrsh7th/nvim-cmp/issues/2035#issuecomment-2347186210
 
-		local config = require("cmp.config")
-		local toggle_ghost_text = function()
-			if vim.api.nvim_get_mode().mode ~= "i" then
-				return
-			end
-
-			local cursor_column = vim.fn.col(".")
-			local current_line_contents = vim.fn.getline(".")
-			local character_after_cursor = current_line_contents:sub(cursor_column, cursor_column)
-
-			local should_enable_ghost_text = character_after_cursor == ""
-				or vim.fn.match(character_after_cursor, [[\k]]) == -1
-
-			local current = config.get().experimental.ghost_text
-			if current ~= should_enable_ghost_text then
-				config.set_global({
-					experimental = {
-						ghost_text = should_enable_ghost_text,
-					},
-				})
-			end
-		end
-
-		vim.api.nvim_create_autocmd({ "InsertEnter", "CursorMovedI" }, {
-			callback = toggle_ghost_text,
-		})
+		-- local config = require("cmp.config")
+		-- local toggle_ghost_text = function()
+		-- 	if vim.api.nvim_get_mode().mode ~= "i" then
+		-- 		return
+		-- 	end
+		--
+		-- 	local cursor_column = vim.fn.col(".")
+		-- 	local current_line_contents = vim.fn.getline(".")
+		-- 	local character_after_cursor = current_line_contents:sub(cursor_column, cursor_column)
+		--
+		-- 	local should_enable_ghost_text = character_after_cursor == ""
+		-- 		or vim.fn.match(character_after_cursor, [[\k]]) == -1
+		--
+		-- 	local current = config.get().experimental.ghost_text
+		-- 	if current ~= should_enable_ghost_text then
+		-- 		config.set_global({
+		-- 			experimental = {
+		-- 				ghost_text = should_enable_ghost_text,
+		-- 			},
+		-- 		})
+		-- 	end
+		-- end
+		--
+		-- vim.api.nvim_create_autocmd({ "InsertEnter", "CursorMovedI" }, {
+		-- 	callback = toggle_ghost_text,
+		-- })
 		-- ! Ghost text stuff ! --
 	end,
 }

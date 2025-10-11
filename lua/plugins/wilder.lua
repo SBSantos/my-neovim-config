@@ -17,24 +17,27 @@ return {
                 min_width = "20%", -- minimun height of the popupmenu, can also be number
                 max_height = "15%", -- to set a fixed height, set max_height to the same value
                 reverse = 0, -- if 1, shows the candidates from bottom to top
+                prompt_position = "bottom",
+                left = {' ', wilder.popupmenu_devicons()},
+                right = {' ', wilder.popupmenu_scrollbar()},
                 highlighter = {
                     wilder.lua_fzy_highlighter(), -- Requires fzy-lua-native
                 },
                 highlights = {
-                    default = wilder.make_hl(
-                        "WilderPopupMenu",
-                        "Pmenu",
-                        { { a = 1 }, { a = 1 }, { background = "#1E212B" } } -- Adjust background color
-                    ),
+                    -- default = wilder.make_hl(
+                    --     "WilderPopupMenu",
+                    --     "Pmenu",
+                    --     { { a = 1 }, { a = 1 }, { background = "#1E212B" } } -- Adjust background color
+                    -- ),
                     accent = wilder.make_hl(
                         "WilderAccent",
                         "Pmenu",
-                        { { a = 1 }, { a = 1 }, { foreground = "#58FFD6", background = "#1e1e2e" } }
+                        { { a = 1 }, { a = 1 }, { foreground = "#58FFD6" } }--, background = "#1e1e2e" } }
                     ),
                 },
                 -- 'single', 'double', 'rounded' or 'solid'
                 -- can also be alist of 8 characters, see :h wilder#popupmenu_border_theme() for more details
-                border = "single",
+                border = "rounded",
             }))
         )
     end

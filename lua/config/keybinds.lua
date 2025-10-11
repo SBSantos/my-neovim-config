@@ -13,8 +13,9 @@ kmap("n", "<C-d>", "<C-d>zz", { desc = "Half page down (centered)" })
 kmap("n", "<C-u>", "<C-u>zz", { desc = "Half page up (centered)" })
 
 -- buffer
-kmap("n", "<leader>bn", "<Cmd>bnext<CR>", { desc = "Next buffer" })
-kmap("n", "<leader>bp", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
+kmap("n", "<TAB>", "<Cmd>bnext<CR>", { desc = "Next buffer" })
+kmap("n", "<S-TAB>", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
+kmap("n", "<leader>bo", "<CMD>BDeleteOther<CR>", { desc = "Delete other buffers"}) -- see autocmds.lua
 
 -- navigation
 kmap("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })

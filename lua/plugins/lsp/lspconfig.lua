@@ -4,6 +4,10 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
+		{
+			"ray-x/lsp_signature.nvim",
+			event = { "BufReadPre", "BufNewFile", "InsertEnter" },
+		},
 	},
 	config = function()
 		vim.api.nvim_create_autocmd("LspAttach", {
@@ -11,6 +15,27 @@ return {
 			callback = function(ev)
 				local opts = { buffer = ev.buf, silent = true }
 				local kmap = vim.keymap.set
+				local border_style = "rounded"
+				local signature = require("lsp_signature")
+
+				signature.on_attach({
+                    -- doc_lines:
+                    -- will show two lines of comment/doc
+                    -- set to 0 if you DO NOT want any API comments be shown
+                    -- This setting only take effect in insert mode
+                    -- it does not affect signature help in normal mode
+                    -- 10 by default
+                    doc_lines = 0,
+					bind = true,
+					hint_enable = true,
+					hint_prefix = " ",
+                    hint_scheme = "Number",
+                    hi_parameter = "Keyword",
+                    handler_opts = {
+						border = border_style,
+					},
+                    select_signature_key = "<M-n>",
+				}, ev.buf)
 
 				-- keymaps
 				opts.desc = "Show LSP references"
@@ -36,20 +61,24 @@ return {
 				opts.desc = "Smart rename"
 				kmap("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
-				opts.desc = "Show buffer diagnostics"
-				kmap("n", "<leader>db", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+				opts.desc = "Telescope diagnostics buffer"
+				kmap("n", "<leader>fd", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
 				opts.desc = "Show line diagnostics"
-				kmap("n", "<leader>dl", vim.diagnostic.open_float, opts) -- show diagnostics for line
+				kmap("n", "<leader>ld", function()
+					vim.diagnostic.open_float({ border = border_style })
+				end, opts) -- show diagnostics for line
 
 				opts.desc = "Show documentation for what is under cursor"
-				kmap("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+				kmap("n", "K", function()
+					vim.lsp.buf.hover({ border = border_style })
+				end, opts) -- show documentation for what is under cursor
 
 				opts.desc = "Restart LSP"
 				kmap("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
 				kmap("i", "<C-h>", function()
-					vim.lsp.buf.signature_help()
+					vim.lsp.buf.signature_help({ border = border_style })
 				end, opts)
 
 				opts.desc = "Show method definition"
@@ -111,5 +140,13 @@ return {
 
 		-- roslyn
 		lsp.config("roslyn", {})
+
+		-- html
+		lsp.config("html", {})
+		lsp.enable("html")
+
+		-- cssls
+		lsp.config("cssls", {})
+		lsp.enable("cssls")
 	end,
 }

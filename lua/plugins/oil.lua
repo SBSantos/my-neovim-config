@@ -21,6 +21,6 @@ return {
 		})
 		-- keymaps
 		vim.keymap.set("n", "<C-b>", "<Cmd>Oil<CR>", { desc = "Open parent directory" })
-		vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { desc = "Toggle float oil" })
+		-- vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { desc = "Toggle float oil" })
 	end,
 }

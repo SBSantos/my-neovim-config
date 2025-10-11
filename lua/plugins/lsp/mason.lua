@@ -20,6 +20,7 @@ return {
 					"github:Crashdummyy/mason-registry",
 				},
 				ui = {
+                    border = "rounded",
 					icons = {
 						package_installed = "✓",
 						package_pending = "➜",

@@ -7,6 +7,11 @@ return {
 		config = function()
 			require("nightfall").setup({
 				transparent = true,
+                styles = {
+                    comments = { italic = false },
+                    keywords = { italic = false },
+                    coroutines = { italic = false },
+                }
 			})
 			-- vim.cmd("colorscheme nightfall") -- Choose from: nightfall, deeper-night, maron, nord
 		end,
@@ -28,16 +33,7 @@ return {
 		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.g.everforest_transparent_background = 1
-		end,
-	},
-	{
-		"rebelot/kanagawa.nvim",
-		lazy = false,
-		config = function()
-			require("kanagawa").setup({
-				transparent = true,
-			})
+			-- vim.g.everforest_transparent_background = 1
 		end,
 	},
 	{
@@ -48,13 +44,6 @@ return {
 			dark_style_background = "transparent", -- default, dark, transparent, #RRGGBB
 			light_style_background = "default", -- default, dark, transparent, #RRGGBB
 		},
-	},
-	{
-		"ErichDonGubler/vim-sublime-monokai",
-		lazy = false,
-		config = function()
-			vim.g.sublimemonokai_transparent_bg = 0
-		end,
 	},
 	{
 		"Koalhack/darcubox-nvim",
@@ -119,17 +108,6 @@ return {
 		config = function()
 			require("vesper").setup({
 				transparent = false,
-			})
-		end,
-	},
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		lazy = false,
-		config = function()
-			require("catppuccin").setup({
-				transparent_background = false,
 			})
 		end,
 	},
