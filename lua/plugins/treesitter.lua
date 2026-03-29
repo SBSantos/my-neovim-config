@@ -1,42 +1,20 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
 	event = { "BufReadPre", "BufNewFile" },
-	branch = "master",
+    lazy = false,
 	build = ":TSUpdate",
 	config = function()
-		local configs = require("nvim-treesitter.configs")
-		configs.setup({
-			highlight = {
-				enable = true,
-			},
-			ident = { enable = true },
-			autotage = { enable = true },
-			ensure_installed = {
-				"c",
-				"cmake",
-				"cpp",
-				"c_sharp",
-				"css",
-				"html",
-				"lua",
-				"vim",
-				"vimdoc",
-				"query",
-				"markdown",
-				"markdown_inline",
-				"make",
-				"razor",
-			},
-			auto_install = false,
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "<C-space",
-					node_incremental = "<C-space>",
-					scope_incremental = false,
-				},
-			},
-			additional_vim_regex_highlighting = false,
-		})
+        local ts = require("nvim-treesitter")
+
+        ts.setup()
+
+        vim.api.nvim_create_autocmd("FileType", {
+            pattern = { "<filetype>" },
+            callback = function()
+                vim.treesitter.start()
+            end,
+        })
+
+        vim.bo.indentexpr = "v:lua.require'nvim_treesitter'.indentexpr()"
 	end,
 }

@@ -4,6 +4,7 @@ local M = {}
 
 local function set_terminal_keymaps()
 	local opts = { buffer = 0, noremap = true, silent = true }
+
 	-- back to normal mode
 	kmap("t", "<Esc>", [[<C-\><C-n>]], opts)
 
@@ -20,11 +21,37 @@ function M.setup()
 		callback = function()
 			set_terminal_keymaps()
 			vim.cmd("startinsert")
+
+			vim.bo.bufhidden = "hide"
+
+			vim.bo.buflisted = false
 		end,
 	})
 
-	kmap("n", "<leader>''", ":split | terminal<CR>", { noremap = true, silent = true, desc = "Open terminal horizontally" })
-	kmap("n", "<leader>'v", ":vsplit | terminal<CR>", { noremap = true, silent = true, desc = "Open terminal vertically" })
+	vim.api.nvim_create_autocmd("TermClose", {
+		pattern = "*",
+		callback = function(args)
+			vim.schedule(function()
+				if vim.api.nvim_buf_is_valid(args.buf) then
+					vim.api.nvim_buf_delete(args.buf, { force = true })
+				end
+			end)
+		end,
+	})
+
+	kmap(
+		"n",
+		"<leader>th",
+		":split | terminal<CR>",
+		{ noremap = true, silent = true, desc = "Open horizontal terminal" }
+	)
+
+	kmap(
+		"n",
+		"<leader>tv",
+		":vsplit | terminal<CR>",
+		{ noremap = true, silent = true, desc = "Open vertical terminal" }
+	)
 end
 
 return M

@@ -2,40 +2,16 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
-		{
-			"ray-x/lsp_signature.nvim",
-			event = { "BufReadPre", "BufNewFile", "InsertEnter" },
-		},
+        "saghen/blink.cmp",
 	},
 	config = function()
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
-				local opts = { buffer = ev.buf, silent = true }
+                local bufnr = ev.buf
+				local opts = { noremap = true, silent = true, buffer = bufnr }
 				local kmap = vim.keymap.set
-				local border_style = "rounded"
-				local signature = require("lsp_signature")
-
-				signature.on_attach({
-                    -- doc_lines:
-                    -- will show two lines of comment/doc
-                    -- set to 0 if you DO NOT want any API comments be shown
-                    -- This setting only take effect in insert mode
-                    -- it does not affect signature help in normal mode
-                    -- 10 by default
-                    doc_lines = 0,
-					bind = true,
-					hint_enable = true,
-					hint_prefix = " ",
-                    hint_scheme = "Number",
-                    hi_parameter = "Keyword",
-                    handler_opts = {
-						border = border_style,
-					},
-                    select_signature_key = "<M-n>",
-				}, ev.buf)
+                local border_style = "rounded"
 
 				-- keymaps
 				opts.desc = "Show LSP references"
@@ -77,76 +53,50 @@ return {
 				opts.desc = "Restart LSP"
 				kmap("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-				kmap("i", "<C-h>", function()
-					vim.lsp.buf.signature_help({ border = border_style })
-				end, opts)
-
 				opts.desc = "Show method definition"
 				kmap("n", "<leader>D", vim.lsp.buf.definition, opts)
 			end,
 		})
 
-		local signs = {
-			[vim.diagnostic.severity.ERROR] = " ",
-			[vim.diagnostic.severity.WARN] = " ",
-			[vim.diagnostic.severity.HINT] = "󰠠 ",
-			[vim.diagnostic.severity.INFO] = " ",
-		}
+        local signs = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.HINT] = "",
+			[vim.diagnostic.severity.INFO] = "",
+        }
 
-		-- Set the diagnostic config with all icons
 		vim.diagnostic.config({
-			signs = {
-				text = signs, -- Enable signs in the gutter
-			},
+			signs = { text = signs, }, -- Enable signs in the gutter
 			virtual_text = true, -- Specify Enable virtual text for diagnostics
 			underline = true, -- Specify Underline diagnostics
 			update_in_insert = false, -- Keep diagnostics active in insert mode
 		})
 
-		-- Setup servers
-		local lsp = vim.lsp
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+        local lsp = vim.lsp
+        local blink = require("blink.cmp")
+        local capabilities = blink.get_lsp_capabilities()
 
-		lsp.config("*", {
-			capabilities = capabilities,
-		})
+        lsp.config("*", {
+            capabilities = capabilities,
+        })
 
 		-- Config lsp servers here
 		-- lua_ls
 		lsp.config("lua_ls", {
 			settings = {
 				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-					completion = {
-						callSnippet = "Replace",
-					},
-					workspace = {
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
-						},
-					},
+					diagnostics = { globals = { "vim" } },
 				},
 			},
 		})
-		lsp.enable("lua_ls")
 
 		-- clangd
 		lsp.config("clangd", {})
-		lsp.enable("clangd")
 
-		-- roslyn
-		lsp.config("roslyn", {})
-
-		-- html
-		lsp.config("html", {})
-		lsp.enable("html")
-
-		-- cssls
-		lsp.config("cssls", {})
-		lsp.enable("cssls")
+        -- enable
+        lsp.enable({
+            "lua_ls",
+            "clangd"
+        })
 	end,
 }

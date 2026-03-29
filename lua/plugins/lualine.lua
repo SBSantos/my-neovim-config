@@ -5,72 +5,70 @@ return {
 	},
 	config = function()
 		local lualine = require("lualine")
-		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+		-- local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 
 		local mode = {
 			"mode",
 			fmt = function(str)
 				-- return ' '
 				-- displays only the first character of the mode
-				return " " .. str
+				return "" .. str -- " "
 			end,
 		}
 
 		local diff = {
 			"diff",
 			colored = true,
-			symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+			symbols = { added = "+", modified = "~", removed = "-" }, -- changes diff symbols      
 			-- cond = hide_in_width,
 		}
 
 		local filename = {
-			"filename",
+            "filename",
 			file_status = true,
 			newfile_status = true,
 			path = 1,
 			symbols = {
-				modified = " ",
-				readonly = " ",
+				modified = "[+]", --  
+				readonly = "",
 				unnamed = "[No Name]",
-				newfile = " ",
+				newfile = "",
 			},
 		}
 
 		local diagnostics = {
 			"diagnostics",
 			colored = true,
-			symbols = { error = " ", warn = " ", info = " ", hint = " " },
+			symbols = { error = " ", warn = " ", info = " ", hint = " " }, --        
 			update_in_insert = true, -- Update diagnostics in insert mode.
 			always_visible = false,
 		}
 
-		local branch = { "branch", icon = { "" } }
+		local branch = { "branch", icon = "" } -- 
 
 		local filetype = {
 			"filetype",
-			colored = true,
+			colored = false,
 			icon_only = true,
 		}
 
-		-- local lspstatus = {
-		-- 	"lsp_status",
-		-- 	icon = "", -- f013
-		-- 	symbols = {
-		-- 		-- Standard unicode symbols to cycle through for LSP progress:
-		-- 		spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
-		-- 		-- Standard unicode symbol for when LSP is done:
-		-- 		done = "",
-		-- 		-- Delimiter inserted between LSP names:
-		-- 		separator = " ",
-		-- 	},
-		-- 	-- List of LSP names to ignore (e.g., `null-ls`):
-		-- 	ignore_lsp = { "roslyn" },
-		-- }
+		local lspstatus = {
+			"lsp_status",
+			icon = "", --  f013
+			symbols = {
+				-- Standard unicode symbols to cycle through for LSP progress:
+				spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
+				-- Standard unicode symbol for when LSP is done:
+				done = "",
+				-- Delimiter inserted between LSP names:
+				separator = " ",
+			},
+		}
 
         -- count buffers
         local function buffer_count()
             local count = #vim.fn.getbufinfo({ buflisted = 1 })
-            return "󰓩 " .. count
+            return "" .. count -- 󰓩 
         end
 
         local function get_max_buffer_width()
@@ -103,18 +101,18 @@ return {
 			}, -- Shows specific buffer name for that filetype ( { `filetype` = `buffer_name`, ... } )
 
 			-- Automatically updates active buffer color to match color of other components (will be overidden if buffers_color is set)
-			use_mode_colors = false,
+			use_mode_colors = true,
 
-			-- buffers_color = {
-			-- 	-- Same values as the general color option can be used here.
-			-- 	active = "lualine_{section}_normal", -- Color for active buffer.
-			-- 	inactive = "lualine_{section}_inactive", -- Color for inactive buffer.
-			-- },
+			buffers_color = {
+				-- Same values as the general color option can be used here.
+				-- active = "lualine_a_normal", -- Color for active buffer.
+				inactive = "lualine_c_inactive", -- Color for inactive buffer.
+			},
 
 			symbols = {
-				modified = " ●", -- Text to show when the buffer is modified
-				alternate_file = "#", -- Text to show to identify the alternate file
-				directory = "", -- Text to show when the buffer is a directory
+				modified = " +", -- Text to show when the buffer is modified " ●"
+				alternate_file = " #", -- Text to show to identify the alternate file
+				directory = " ", -- Text to show when the buffer is a directory ""
 			},
 		}
 
@@ -122,31 +120,33 @@ return {
             require("easy-dotnet.ui-modules.jobs").lualine
         }
 
+
 		lualine.setup({
-			icons_enabled = true,
 			options = {
+                icons_enabled = true,
 				theme = "auto",
-				component_separators = { left = "", right = "" },
-				section_separators = { left = "", right = "" },
+				component_separators = { left = "", right = "" }, -- 
+				section_separators = { left = "", right = "" }, --  
 				always_show_tabline = true,
+                globalstatus = true
 			},
 			sections = {
 				lualine_a = { mode },
 				lualine_b = { branch },
 				lualine_c = { diff, filename },
 				lualine_x = {
-					-- lspstatus,
+					lspstatus,
 					diagnostics,
-					{
-						-- require("noice").api.statusline.mode.get,
-						-- cond = require("noice").api.statusline.mode.has,
-						lazy_status.updates,
-						cond = lazy_status.has_updates,
-						color = { fg = "#ff9e64" },
-					},
+					-- {
+					-- 	-- require("noice").api.statusline.mode.get,
+					-- 	-- cond = require("noice").api.statusline.mode.has,
+					-- 	lazy_status.updates,
+					-- 	cond = lazy_status.has_updates,
+					-- 	color = { fg = "#ff9e64" },
+					-- },
 					-- { "encoding" },
-					filetype,
-					{ "fileformat" },
+                    filetype,
+					-- { "fileformat" },
 				},
 				lualine_y = {}, -- removes 'progress'
                 lualine_z = {
@@ -156,7 +156,7 @@ return {
 			},
 			tabline = {
 				lualine_a = { buffers },
-                lualine_z = { buffer_count },
+			    lualine_z = { buffer_count },
 			},
 		})
 	end,

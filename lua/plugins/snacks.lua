@@ -5,6 +5,10 @@ return {
 		lazy = false,
 		opts = {
 			dashboard = { enabled = true },
+			indent = {
+				enabled = true,
+				animate = { enabled = false },
+			},
 			quickfile = {
 				enabled = true,
 				exclude = { "latex" },
@@ -94,7 +98,6 @@ return {
 			},
 		},
 		keys = {
-
 			{
 				"<C-r>",
 				function()
@@ -117,42 +120,6 @@ return {
 				desc = "Find Config File",
 			},
 			{
-				"<leader>sf",
-				function()
-					require("snacks").picker.files()
-				end,
-				desc = "Snack Find Files",
-			},
-			{
-				"<leader>sg",
-				function()
-					require("snacks").picker.grep()
-				end,
-				desc = "Snack Grep",
-			},
-			{
-				"<leader>sw",
-				function()
-					require("snacks").picker.grep_word()
-				end,
-				desc = "Visual selection or word",
-				mode = { "n", "x" },
-			},
-			{
-				"<leader>gb",
-				function()
-					require("snacks").picker.git_branches()
-				end,
-				desc = "Snack Git Branches",
-			},
-			-- {
-			-- 	"<leader>sth",
-			-- 	function()
-			-- 		require("snacks").picker.colorschemes()
-			-- 	end,
-			-- 	desc = "Snack Colorschemes Picker",
-			-- },
-			{
 				"<leader>hp",
 				function()
 					require("snacks").picker.help()
@@ -168,33 +135,13 @@ return {
 			-- 	end,
 			-- 	desc = "Lazygit",
 			-- },
-			{
-				"<leader>gl",
-				function()
-					require("snacks").lazygit.log()
-				end,
-				desc = "Lazygit Logs",
-			},
-		},
-	},
-	{
-		"folke/todo-comments.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		keys = {
-			{
-				"<leader>td",
-				function()
-					require("snacks").picker.todo_comments()
-				end,
-				desc = "Todo",
-			},
-			{
-				"<leader>tD",
-				function()
-					require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } })
-				end,
-				desc = "Todo/Fix/Fixme",
-			},
+			-- {
+			-- 	"<leader>gl",
+			-- 	function()
+			-- 		require("snacks").lazygit.log()
+			-- 	end,
+			-- 	desc = "Lazygit Logs",
+			-- },
 		},
 	},
 }

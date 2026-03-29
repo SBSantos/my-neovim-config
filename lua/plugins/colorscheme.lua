@@ -7,43 +7,49 @@ return {
 		config = function()
 			require("nightfall").setup({
 				transparent = true,
-                styles = {
-                    comments = { italic = false },
-                    keywords = { italic = false },
-                    coroutines = { italic = false },
-                }
+				styles = {
+					comments = { italic = false },
+					keywords = { italic = false },
+					coroutines = { italic = false },
+				},
 			})
 			-- vim.cmd("colorscheme nightfall") -- Choose from: nightfall, deeper-night, maron, nord
 		end,
 	},
 	{
-		"sainnhe/gruvbox-material",
+		"datsfilipe/vesper.nvim",
 		lazy = false,
-		priority = 1000,
 		config = function()
-			-- Optionally configure and load the colorscheme
-			-- directly inside the plugin declaration.
-			vim.g.gruvbox_material_enable_italic = true
-			-- vim.cmd.colorscheme('gruvbox-material')
-			vim.g.gruvbox_material_transparent_background = 0
+			require("vesper").setup({
+				transparent = true,
+				italics = {
+					comments = false, -- Boolean: Italicizes comments
+					keywords = false, -- Boolean: Italicizes keywords
+					functions = false, -- Boolean: Italicizes functions
+					strings = false, -- Boolean: Italicizes strings
+					variables = false, -- Boolean: Italicizes variables
+				},
+			})
 		end,
 	},
 	{
-		"sainnhe/everforest",
+		"ficcdaf/ashen.nvim",
+		-- optional but recommended,
+		-- pin to the latest stable release:
+		tag = "v0.11.0",
 		lazy = false,
-		priority = 1000,
+		-- configuration is optional!
 		config = function()
-			-- vim.g.everforest_transparent_background = 1
+			require("ashen").setup({
+				hl = {
+					force_override = {
+						["@boolean"] = { "#e5a72a" },
+						["@number"] = { "#e5a72a" },
+					},
+				},
+				transparent = true,
+			})
 		end,
-	},
-	{
-		"polirritmico/monokai-nightasty.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			dark_style_background = "transparent", -- default, dark, transparent, #RRGGBB
-			light_style_background = "default", -- default, dark, transparent, #RRGGBB
-		},
 	},
 	{
 		"Koalhack/darcubox-nvim",
@@ -51,76 +57,39 @@ return {
 		config = function()
 			require("darcubox").setup({
 				options = {
-					transparent = true,
+					transparent = false,
 				},
-			})
-		end,
-	},
-	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {},
-		config = function()
-			require("tokyonight").setup({
-				transparent = false,
-			})
-		end,
-	},
-	{
-		"tiagovla/tokyodark.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {
-			-- custom options here
-		},
-		config = function()
-			require("tokyodark").setup({
-				transparent_background = true,
 			})
 		end,
 	},
 	{
 		"Shatur/neovim-ayu",
 		lazy = false,
-		priority = 1000,
 		config = function()
 			require("ayu").setup({
 				-- uncomment for transparency
-				overrides = {
-					Normal = { bg = "None" },
-					NormalFloat = { bg = "none" },
-					ColorColumn = { bg = "None" },
-					SignColumn = { bg = "None" },
-					Folded = { bg = "None" },
-					FoldColumn = { bg = "None" },
-					CursorLine = { bg = "None" },
-					CursorColumn = { bg = "None" },
-					VertSplit = { bg = "None" },
-				},
+				-- overrides = {
+				-- 	Normal = { bg = "None" },
+				-- 	NormalFloat = { bg = "none" },
+				-- 	ColorColumn = { bg = "None" },
+				-- 	SignColumn = { bg = "None" },
+				-- 	Folded = { bg = "None" },
+				-- 	FoldColumn = { bg = "None" },
+				-- 	CursorLine = { bg = "None" },
+				-- 	CursorColumn = { bg = "None" },
+				-- 	VertSplit = { bg = "None" },
+				-- },
 			})
 		end,
 	},
 	{
-		"datsfilipe/vesper.nvim",
+		"sainnhe/everforest",
 		lazy = false,
-		priority = 1000,
 		config = function()
-			require("vesper").setup({
-				transparent = false,
-			})
+			vim.g.everforest_transparent_background = 1
 		end,
 	},
-	{
-		"olimorris/onedarkpro.nvim",
-		priority = 1000, -- Ensure it loads first
+	{ "jacoborus/tender.vim",
 		lazy = false,
-		config = function()
-			require("onedarkpro").setup({
-				options = {
-					transparency = false,
-				},
-			})
-		end,
 	},
 }
